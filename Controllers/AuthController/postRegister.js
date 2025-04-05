@@ -15,9 +15,9 @@ const postRegister = async (req, res, next) => {
     await user.save();
 
     return res.status(200).json({
-      timestamp: Date.now(),
       message: "email sent successfully!",
       status: 200,
+      success: true,
     });
   } catch (e) {
     return MyError.errorMiddleWare(e, res);

@@ -7,6 +7,13 @@ const {
 const ConfessionController = require("@ConfessionController/ConfessionController.js");
 const router = express.Router();
 
+router.get(
+  "/home",
+  isAuthenticated,
+  ifNotAuthenticatedRedirect,
+  ConfessionController.getALLConfessions
+);
+
 router.post(
   "/create-confession",
   isAuthenticated,
@@ -34,7 +41,6 @@ router.put(
   ConfessionController.updateMyConfession
 );
 
-
 router.get(
   "/get-all-confessions-admin",
   isAuthenticated,
@@ -54,6 +60,5 @@ router.delete(
   ifNotAuthenticatedRedirect,
   ConfessionController.deleteConfessionAdmin
 );
-
 
 module.exports = router;

@@ -12,9 +12,7 @@ const sendOTP = async (req, res) => {
     }
 
     if (Date.now() - user.lastOtpTime < 1 * 60 * 1000) {
-      return res.status(400).json({
-        message: "Please wait before requesting!",
-      });
+      throw new MyError(400, "Please Wait before requesting");
     }
 
     const otp = await sendOTPMail(email);
@@ -27,6 +25,8 @@ const sendOTP = async (req, res) => {
 
     return res.status(200).json({
       message: "OTP sent successfully!",
+      success: true,
+      status: 200,
     });
   } catch (e) {
     return MyError.errorMiddleWare(e, res);

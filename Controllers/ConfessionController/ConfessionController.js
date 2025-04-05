@@ -87,6 +87,19 @@ class ConfessionControllers {
       return MyError.errorMiddleWare(e, res);
     }
   };
+  static getALLConfessions = async (req, res, next) => {
+    try {
+      const confessions = await ConfessionModel.find({}).select("-__v").exec();
+      return res.status(200).json({
+        message: "Confessions found!",
+        data: confessions,
+        status: 200,
+        success: true,
+      });
+    } catch (e) {
+      return MyError.errorMiddleWare(e, res);
+    }
+  };
 
   static updateMyConfession = async (req, res, next) => {
     try {

@@ -30,10 +30,10 @@ const app = express();
 
 app.use(
   cors({
+    origin: "http://localhost:5173", // ❌ This does NOT work with credentials: true
     credentials: true,
   })
 );
-
 app.use(express.json());
 
 app.use(cookieParser());
