@@ -9,8 +9,8 @@ const isAuthenticated = (req, res, next) => {
 
   // const accessToken = authHeader?.split(" ")[1];
 
-  console.log("inside authentication.js");
-  console.log(req.headers);
+  // console.log("inside authentication.js");
+  // console.log(req.headers);
   const refreshToken = req.cookies?.refreshToken || "";
   const accessToken = req.cookies?.accessToken || "";
   if (!accessToken) {
