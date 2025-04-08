@@ -1,5 +1,6 @@
 const path = require("path");
 const moduleAlias = require("module-alias");
+const morgan = require("morgan");
 
 // Dynamically resolve paths for Vercel
 moduleAlias.addAliases({
@@ -27,16 +28,17 @@ const passport = require("passport");
 const passportSetup = require("./Helpers/AuthHelper/passport.js");
 const cors = require("cors");
 const app = express();
+app.use(morgan("dev"));
+app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // ❌ This does NOT work with credentials: true
+    // origin: "http://localhost:3000",
+    origin: "https://confession-front-end.vercel.app",
     credentials: true,
   })
 );
 app.use(express.json());
-
-app.use(cookieParser());
 
 app.use(passport.initialize());
 

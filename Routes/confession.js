@@ -5,19 +5,30 @@ const {
 } = require("@middlewares/AuthMiddleWare/AuthMiddleWares.js");
 
 const ConfessionController = require("@ConfessionController/ConfessionController.js");
+const { bindUser } = require("../MiddleWares/AuthMiddleWare/AuthMiddleWares");
 const router = express.Router();
 
 router.get(
   "/home",
   isAuthenticated,
   ifNotAuthenticatedRedirect,
+  bindUser,
   ConfessionController.getALLConfessions
+);
+
+router.post(
+  "/add-comment/:confessionId",
+  isAuthenticated,
+  ifNotAuthenticatedRedirect,
+  bindUser,
+  ConfessionController.addComment
 );
 
 router.post(
   "/create-confession",
   isAuthenticated,
   ifNotAuthenticatedRedirect,
+  bindUser,
   ConfessionController.createConfession
 );
 

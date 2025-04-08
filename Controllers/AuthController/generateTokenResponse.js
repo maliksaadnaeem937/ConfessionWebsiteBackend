@@ -7,6 +7,7 @@ const {
 const generateTokenResponse = async (req, res, next) => {
   try {
     const { verifiedUser } = req;
+    console.log(verifiedUser);
     if (!verifiedUser) {
       return next();
     }
@@ -25,14 +26,14 @@ const generateTokenResponse = async (req, res, next) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "Strict",
+      sameSite: "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "Strict",
+      sameSite: "Lax",
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
     });
 

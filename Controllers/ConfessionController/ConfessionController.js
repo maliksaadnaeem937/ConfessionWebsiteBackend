@@ -13,12 +13,6 @@ class ConfessionControllers {
       if (!text || text?.length < 5 || text?.length > 1000) {
         throw new MyError(400, "Min:5 Max:1000");
       }
-      const verifiedUser = await VerifiedUserModel.findOne({ id: user.id });
-      if (!verifiedUser) {
-        throw new MyError(404, "Invalid Confession");
-      }
-
-      user.objectId = verifiedUser?._id;
 
       const newConfession = new ConfessionModel({
         text,
@@ -33,6 +27,52 @@ class ConfessionControllers {
       });
     } catch (e) {
       return MyError.errorMiddleWare(e, res);
+    }
+  };
+  static addComment = async (req, res, next) => {
+    try {
+      const { confessionId } = req.params;
+      const { text } = req.body;
+      const userId = req.user.objectId;
+
+      if (!text || text.trim().length < 5) {
+        return res.status(400).json({
+          success: false,
+          message: "Comment must be at least 5 characters long",
+        });
+      }
+
+      // Find confession and add comment
+      const confession = await ConfessionModel.findByIdAndUpdate(
+        confessionId,
+        {
+          $push: {
+            comments: {
+              user: userId,
+              text: text.trim(),
+            },
+          },
+        },
+        { new: true, runValidators: true }
+      );
+
+      if (!confession) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Confession not found" });
+      }
+
+      // Get the newly added comment (last in array)
+      const newComment = confession.comments[confession.comments.length - 1];
+
+      res.status(201).json({
+        success: true,
+        message: "Comment added successfully",
+        comment: newComment,
+        status: 201,
+      });
+    } catch (error) {
+      MyError.errorMiddleWare(error, res);
     }
   };
 
@@ -89,7 +129,17 @@ class ConfessionControllers {
   };
   static getALLConfessions = async (req, res, next) => {
     try {
-      const confessions = await ConfessionModel.find({}).select("-__v").exec();
+      const confessions = await ConfessionModel.find({})
+        .select("-__v")
+        .populate({
+          path: "user", // Populate the user field in the confession
+          select: "name",
+        })
+        .populate({
+          path: "comments.user", // Populate the user field in each comment
+          select: "name",
+        })
+        .exec();
       return res.status(200).json({
         message: "Confessions found!",
         data: confessions,

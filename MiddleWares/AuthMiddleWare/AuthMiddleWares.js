@@ -2,6 +2,7 @@ const isAuthenticated = require("./authentication.js");
 const verifyOtp = require("./verifyotp.js");
 const postLogin = require("./postLogin.js");
 const ifNotAuthenticatedRedirect = require("./ifNotAuthenticatedRedirect.js");
+const bindUser=require("./bindUser.js");
 
 class AuthMiddleware {
   static isAuthenticated = isAuthenticated;
@@ -15,4 +16,5 @@ module.exports = {
   verifyOtp,
   loginUser: postLogin,
   ifNotAuthenticatedRedirect,
+  bindUser
 };
