@@ -32,8 +32,7 @@ const generateTokenResponse = async (req, res, next) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      path: "/",
-      domain: domain
+      path: "/"
     };
     
     res.cookie("refreshToken", refreshToken, {
@@ -45,6 +44,9 @@ const generateTokenResponse = async (req, res, next) => {
       ...cookieOptions,
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
     });
+    
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'https://confession-front-end.vercel.app');
     
     return res.status(200).json({
       success: true,
