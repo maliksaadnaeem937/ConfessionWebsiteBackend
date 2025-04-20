@@ -24,14 +24,13 @@ const generateTokenResponse = async (req, res, next) => {
       role: verifiedUser.role,
     });
     
-    // Get domain from request or use environment variable
-    const domain = process.env.NODE_ENV === "production" ? ".vercel.app" : undefined;
+
     
     // Set cookie options
     const cookieOptions = {
       httpOnly: true,
       secure: true,
-      sameSite: "None",
+      sameSite: "lax",
       path: "/"
     };
     
@@ -45,8 +44,7 @@ const generateTokenResponse = async (req, res, next) => {
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
     });
     
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'https://confession-front-end.vercel.app');
+    console.log("sending cookies", accessToken, refreshToken);
     
     return res.status(200).json({
       success: true,

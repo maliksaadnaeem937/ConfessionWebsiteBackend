@@ -28,20 +28,20 @@ const cors = require("cors");
 const app = express();
 
 // Define frontend URL based on environment
-const FRONTEND_URL = process.env.NODE_ENV === "production" 
-  ? "https://confession-front-end.vercel.app"
-  : "http://localhost:3000";
+const FRONTEND_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://confession-front-end.vercel.app"
+    : "http://localhost:3000";
 
 app.use(morgan("dev"));
-app.use(cookieParser());
+
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: "https://confession-front-end.vercel.app",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(passport.initialize());
 app.use("/api", authRouter);
