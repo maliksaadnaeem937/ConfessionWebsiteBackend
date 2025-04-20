@@ -44,6 +44,9 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(passport.initialize());
+app.use((req,res,next)=>{
+  console.log("i am parent middle ware to check cookies" , req.cookies);
+})
 app.use("/api", authRouter);
 app.use("/auth", googleAuthRouter);
 app.use("/api/confession/v1", confessionRouter);

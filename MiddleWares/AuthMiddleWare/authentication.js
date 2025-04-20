@@ -11,7 +11,7 @@ const isAuthenticated = (req, res, next) => {
 
   // console.log("inside authentication.js");
   // console.log(req.headers);
-  console.log("cookies= "  ,req.cookies)
+  console.log("cookies = "  , req.cookies)
   const refreshToken = req.cookies?.refreshToken || "";
   const accessToken = req.cookies?.accessToken || "";
   if (!accessToken) {
