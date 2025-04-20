@@ -46,6 +46,7 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use((req,res,next)=>{
   console.log("i am parent middle ware to check cookies" , req.cookies);
+  return next();
 })
 app.use("/api", authRouter);
 app.use("/auth", googleAuthRouter);
