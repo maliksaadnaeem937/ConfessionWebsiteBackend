@@ -29,7 +29,7 @@ const generateTokenResponse = async (req, res, next) => {
     // Set cookie options
     const cookieOptions = {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "lax",
       path: "/"
     };
